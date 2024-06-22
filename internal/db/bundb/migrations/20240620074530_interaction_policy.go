@@ -24,7 +24,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/log"
 
 	oldmodel "github.com/superseriousbusiness/gotosocial/internal/db/bundb/migrations/20240620074530_interaction_policy"
-	newmodel "github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
+	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
 
 	"github.com/uptrace/bun"
 )
@@ -85,7 +85,7 @@ func init() {
 			if err := tx.
 				NewSelect().
 				Model(&oldStatuses).
-				Column("id", "likeable", "replyable", "boostable").
+				Column("id", "likeable", "replyable", "boostable", "visibility").
 				Where("? = ?", bun.Ident("local"), true).
 				WhereGroup(" AND ", func(sq *bun.SelectQuery) *bun.SelectQuery {
 					return sq.
@@ -100,12 +100,39 @@ func init() {
 			// For each status found in this way, update
 			// to new version of interaction policy.
 			for _, oldStatus := range oldStatuses {
-				policy := &newmodel.InteractionPolicy{}
-				if *oldStatus.Likeable {
-					
-				} 
-			}
+				// Start with default policy for this visibility.
+				v := gtsmodel.Visibility(oldStatus.Visibility)
+				policy := gtsmodel.DefaultInteractionPolicyFor(v)
 
+				if !*oldStatus.Likeable {
+					// Nobody can Like.
+					policy.CanLike = gtsmodel.PolicyConditions{}
+				}
+
+				if !*oldStatus.Replyable {
+					// Nobody can Reply.
+					policy.CanReply = gtsmodel.PolicyConditions{}
+				}
+
+				if !*oldStatus.Boostable {
+					// Nobody can Announce.
+					policy.CanAnnounce = gtsmodel.PolicyConditions{}
+				}
+
+				// Update status with the new interaction policy.
+				newStatus := &gtsmodel.Status{
+					ID:                oldStatus.ID,
+					InteractionPolicy: policy,
+				}
+				if _, err := tx.
+					NewUpdate().
+					Model(newStatus).
+					Column("interaction_policy").
+					Where("? = ?", bun.Ident("id"), newStatus.ID).
+					Exec(ctx); err != nil {
+					return err
+				}
+			}
 
 			// Drop now unused columns from statuses table.
 			oldColumns := []string{

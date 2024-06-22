@@ -22,8 +22,6 @@ package gtsmodel
 // an Actor or a Collection of Actors.
 type PolicyEntry int
 
-type PolicyEntries []PolicyEntry
-
 const (
 	// IMPORTANT: If adding policy entry values,
 	// add them *TO THE BOTTOM OF THE LIST*, and
@@ -51,6 +49,53 @@ const (
 	// Item owner's own Actor URI.
 	PolicyEntrySelf
 )
+
+// FeasibleForVisibility returns true if the policy entry could
+// feasibly be set in a policy for an item with the given visibility,
+// otherwise returns false.
+//
+// For example, PolicyEntryPublic could not be set in a policy for an
+// item with visibility FollowersOnly, but could be set in a policy
+// for an item with visibility Public or Unlocked.
+//
+// This is not prescriptive, and should be used only to guide policy
+// choices. Eg., if a remote instance wants to do something wacky like
+// set "anyone can interact with this status" for a Direct visibility
+// status, that's their business; our normal visibility filtering will
+// prevent users on our instance from actually being able to interact
+// unless they can see the status anyway.
+func (p PolicyEntry) FeasibleForVisibility(v Visibility) bool {
+	switch p {
+
+	// Mentioned and self are always
+	// feasible for any visibility.
+	case PolicyEntrySelf,
+		PolicyEntryMentioned:
+		return true
+
+	// Followers/following/mutual entries
+	// are only feasible for items with
+	// followers visibility and higher.
+	case PolicyEntryFollowers,
+		PolicyEntryFollowing:
+		return v == VisibilityFollowersOnly ||
+			v == VisibilityPublic ||
+			v == VisibilityUnlocked
+
+	// Public policy entry only feasible
+	// for items that are To or CC public.
+	case PolicyEntryPublic:
+		return v == VisibilityUnlocked ||
+			v == VisibilityPublic
+
+	// Any other combo
+	// is probably fine.
+	default:
+		return true
+	}
+}
+
+type PolicyEntries []PolicyEntry
 
 // PolicyResult represents the result of
 // checking an Actor URI and interaction
@@ -102,6 +147,23 @@ type PolicyConditions struct {
 	// Actor URIs who are permitted to do an
 	// interaction only pending approval.
 	WithApproval PolicyEntries
+}
+
+// Returns the default interaction policy
+// for the given visibility level.
+func DefaultInteractionPolicyFor(v Visibility) *InteractionPolicy {
+	switch v {
+	case VisibilityPublic:
+		return DefaultInteractionPolicyPublic()
+	case VisibilityUnlocked:
+		return DefaultInteractionPolicyUnlocked()
+	case VisibilityFollowersOnly, VisibilityMutualsOnly:
+		return DefaultInteractionPolicyFollowersOnly()
+	case VisibilityDirect:
+		return DefaultInteractionPolicyDirect()
+	default:
+		panic("visibility " + v + " not recognized")
+	}
 }
 
 // Returns the default interaction policy

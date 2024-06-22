@@ -48,7 +48,7 @@ func (suite *FromClientAPITestSuite) newStatus(
 	state *state.State,
 	account *gtsmodel.Account,
 	visibility gtsmodel.Visibility,
-	policy gtsmodel.InteractionPolicy,
+	policy *gtsmodel.InteractionPolicy,
 	replyToStatus *gtsmodel.Status,
 	boostOfStatus *gtsmodel.Status,
 ) *gtsmodel.Status {
