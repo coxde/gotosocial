@@ -1057,6 +1057,15 @@ func ExtractVisibility(addressable Addressable, actorFollowersURI string) (gtsmo
 	return visibility, nil
 }
 
+// ExtractInteractionPolicy extracts a *gtsmodel.InteractionPolicy
+// from the given Statusable. Will be nil (default policy) for
+// Statusables that have no interactionPolicy set on them, or
+// have a null interactionPolicy. In such a case, we should
+// assume the default policy for the status's visibility level.
+func ExtractInteractionPolicy(statusable Statusable) *gtsmodel.InteractionPolicy {
+	aaaaaaaaaaa
+}
+
 // ExtractSensitive extracts whether or not an item should
 // be marked as sensitive according to its ActivityStreams
 // sensitive property.

@@ -93,10 +93,10 @@ func StopWorkers(state *state.State) {
 	state.Workers.Media.Stop()
 }
 
-func StartTimelines(state *state.State, filter *visibility.Filter, converter *typeutils.Converter) {
+func StartTimelines(state *state.State, visFilter *visibility.Filter, converter *typeutils.Converter) {
 	state.Timelines.Home = timeline.NewManager(
 		tlprocessor.HomeTimelineGrab(state),
-		tlprocessor.HomeTimelineFilter(state, filter),
+		tlprocessor.HomeTimelineFilter(state, visFilter),
 		tlprocessor.HomeTimelineStatusPrepare(state, converter),
 		tlprocessor.SkipInsert(),
 	)
@@ -106,7 +106,7 @@ func StartTimelines(state *state.State, filter *visibility.Filter, converter *ty
 
 	state.Timelines.List = timeline.NewManager(
 		tlprocessor.ListTimelineGrab(state),
-		tlprocessor.ListTimelineFilter(state, filter),
+		tlprocessor.ListTimelineFilter(state, visFilter),
 		tlprocessor.ListTimelineStatusPrepare(state, converter),
 		tlprocessor.SkipInsert(),
 	)

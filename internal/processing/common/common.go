@@ -31,7 +31,7 @@ type Processor struct {
 	state     *state.State
 	converter *typeutils.Converter
 	federator *federation.Federator
-	filter    *visibility.Filter
+	visFilter *visibility.Filter
 }
 
 // New returns a new Processor instance.
@@ -39,12 +39,12 @@ func New(
 	state *state.State,
 	converter *typeutils.Converter,
 	federator *federation.Federator,
-	filter *visibility.Filter,
+	visFilter *visibility.Filter,
 ) Processor {
 	return Processor{
 		state:     state,
 		converter: converter,
 		federator: federator,
-		filter:    filter,
+		visFilter: visFilter,
 	}
 }

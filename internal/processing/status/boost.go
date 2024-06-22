@@ -66,7 +66,7 @@ func (p *Processor) BoostCreate(
 	}
 
 	// Ensure valid boost target for requester.
-	boostable, err := p.filter.StatusBoostable(ctx,
+	boostable, err := p.visFilter.StatusBoostable(ctx,
 		requester,
 		target,
 	)
@@ -184,7 +184,7 @@ func (p *Processor) StatusBoostedBy(ctx context.Context, requestingAccount *gtsm
 		targetStatus = boostedStatus
 	}
 
-	visible, err := p.filter.StatusVisible(ctx, requestingAccount, targetStatus)
+	visible, err := p.visFilter.StatusVisible(ctx, requestingAccount, targetStatus)
 	if err != nil {
 		err = fmt.Errorf("BoostedBy: error seeing if status %s is visible: %s", targetStatus.ID, err)
 		return nil, gtserror.NewErrorNotFound(err)

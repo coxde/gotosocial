@@ -223,13 +223,13 @@ func sizeofAccount() uintptr {
 		DisplayName:             exampleUsername,
 		Note:                    exampleText,
 		NoteRaw:                 exampleText,
-		Memorial:                func() *bool { ok := false; return &ok }(),
+		Memorial:                util.Ptr(false),
 		CreatedAt:               exampleTime,
 		UpdatedAt:               exampleTime,
 		FetchedAt:               exampleTime,
-		Bot:                     func() *bool { ok := true; return &ok }(),
-		Locked:                  func() *bool { ok := true; return &ok }(),
-		Discoverable:            func() *bool { ok := false; return &ok }(),
+		Bot:                     util.Ptr(true),
+		Locked:                  util.Ptr(true),
+		Discoverable:            util.Ptr(false),
 		URI:                     exampleURI,
 		URL:                     exampleURI,
 		InboxURI:                exampleURI,
@@ -335,11 +335,11 @@ func sizeofEmoji() uintptr {
 		ImageContentType:       "image/png",
 		ImageStaticContentType: "image/png",
 		ImageUpdatedAt:         exampleTime,
-		Disabled:               func() *bool { ok := false; return &ok }(),
+		Disabled:               util.Ptr(false),
 		URI:                    "http://localhost:8080/emoji/01F8MH9H8E4VG3KDYJR9EGPXCQ",
-		VisibleInPicker:        func() *bool { ok := true; return &ok }(),
+		VisibleInPicker:        util.Ptr(true),
 		CategoryID:             "01GGQ8V4993XK67B2JB396YFB7",
-		Cached:                 func() *bool { ok := true; return &ok }(),
+		Cached:                 util.Ptr(true),
 	}))
 }
 
@@ -391,9 +391,9 @@ func sizeofFollow() uintptr {
 		UpdatedAt:       exampleTime,
 		AccountID:       exampleID,
 		TargetAccountID: exampleID,
-		ShowReblogs:     func() *bool { ok := true; return &ok }(),
+		ShowReblogs:     util.Ptr(true),
 		URI:             exampleURI,
-		Notify:          func() *bool { ok := false; return &ok }(),
+		Notify:          util.Ptr(false),
 	}))
 }
 
@@ -404,9 +404,9 @@ func sizeofFollowRequest() uintptr {
 		UpdatedAt:       exampleTime,
 		AccountID:       exampleID,
 		TargetAccountID: exampleID,
-		ShowReblogs:     func() *bool { ok := true; return &ok }(),
+		ShowReblogs:     util.Ptr(true),
 		URI:             exampleURI,
-		Notify:          func() *bool { ok := false; return &ok }(),
+		Notify:          util.Ptr(false),
 	}))
 }
 
@@ -482,9 +482,9 @@ func sizeofMedia() uintptr {
 			URL:         exampleURI,
 			RemoteURL:   exampleURI,
 		},
-		Avatar: func() *bool { ok := false; return &ok }(),
-		Header: func() *bool { ok := false; return &ok }(),
-		Cached: func() *bool { ok := true; return &ok }(),
+		Avatar: util.Ptr(false),
+		Header: util.Ptr(false),
+		Cached: util.Ptr(true),
 	}))
 }
 
@@ -524,15 +524,15 @@ func sizeofNotification() uintptr {
 		TargetAccountID:  exampleID,
 		OriginAccountID:  exampleID,
 		StatusID:         exampleID,
-		Read:             func() *bool { ok := false; return &ok }(),
+		Read:             util.Ptr(false),
 	}))
 }
 
 func sizeofPoll() uintptr {
 	return uintptr(size.Of(&gtsmodel.Poll{
 		ID:         exampleID,
-		Multiple:   func() *bool { ok := false; return &ok }(),
-		HideCounts: func() *bool { ok := false; return &ok }(),
+		Multiple:   util.Ptr(false),
+		HideCounts: util.Ptr(false),
 		Options:    []string{exampleTextSmall, exampleTextSmall, exampleTextSmall, exampleTextSmall},
 		StatusID:   exampleID,
 		ExpiresAt:  exampleTime,
@@ -559,7 +559,7 @@ func sizeofReport() uintptr {
 		TargetAccountID:        exampleID,
 		Comment:                exampleText,
 		StatusIDs:              []string{exampleID, exampleID, exampleID},
-		Forwarded:              func() *bool { ok := true; return &ok }(),
+		Forwarded:              util.Ptr(true),
 		ActionTaken:            exampleText,
 		ActionTakenAt:          exampleTime,
 		ActionTakenByAccountID: exampleID,
@@ -580,7 +580,7 @@ func sizeofStatus() uintptr {
 		CreatedAt:                exampleTime,
 		UpdatedAt:                exampleTime,
 		FetchedAt:                exampleTime,
-		Local:                    func() *bool { ok := false; return &ok }(),
+		Local:                    util.Ptr(false),
 		AccountURI:               exampleURI,
 		AccountID:                exampleID,
 		InReplyToID:              exampleID,
@@ -590,13 +590,11 @@ func sizeofStatus() uintptr {
 		BoostOfAccountID:         exampleID,
 		ContentWarning:           exampleUsername, // similar length
 		Visibility:               gtsmodel.VisibilityPublic,
-		Sensitive:                func() *bool { ok := false; return &ok }(),
+		Sensitive:                util.Ptr(false),
 		Language:                 "en",
 		CreatedWithApplicationID: exampleID,
-		Federated:                func() *bool { ok := true; return &ok }(),
-		Boostable:                func() *bool { ok := true; return &ok }(),
-		Replyable:                func() *bool { ok := true; return &ok }(),
-		Likeable:                 func() *bool { ok := true; return &ok }(),
+		Federated:                util.Ptr(true),
+		InteractionPolicy:        gtsmodel.DefaultInteractionPolicyPublic(),
 		ActivityStreamsType:      ap.ObjectNote,
 	}))
 }
@@ -632,8 +630,8 @@ func sizeofTag() uintptr {
 		Name:      exampleUsername,
 		CreatedAt: exampleTime,
 		UpdatedAt: exampleTime,
-		Useable:   func() *bool { ok := true; return &ok }(),
-		Listable:  func() *bool { ok := true; return &ok }(),
+		Useable:   util.Ptr(true),
+		Listable:  util.Ptr(true),
 	}))
 }
 

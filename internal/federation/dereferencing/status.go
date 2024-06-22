@@ -625,7 +625,7 @@ func (d *Dereferencer) isPermittedStatus(
 
 	if *status.InReplyTo.Local {
 		// Check visibility of inReplyTo to status author.
-		permitted, err = d.visibility.StatusVisible(ctx,
+		permitted, err = d.visFilter.StatusVisible(ctx,
 			status.Account,
 			status.InReplyTo,
 		)
@@ -634,11 +634,11 @@ func (d *Dereferencer) isPermittedStatus(
 		}
 	}
 
-	if permitted &&
-		*status.InReplyTo.Replyable {
-		// Status is reply-able to.
-		return true, nil
-	}
+	// if permitted &&
+	// 	*status.InReplyTo.Replyable {
+	// 	// Status is reply-able to.
+	// 	return true, nil
+	// }
 
 	return onFail()
 }

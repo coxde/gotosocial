@@ -35,7 +35,7 @@ type Processor struct {
 	state        *state.State
 	federator    *federation.Federator
 	converter    *typeutils.Converter
-	filter       *visibility.Filter
+	visFilter    *visibility.Filter
 	formatter    *text.Formatter
 	parseMention gtsmodel.ParseMentionFunc
 
@@ -50,7 +50,7 @@ func New(
 	polls *polls.Processor,
 	federator *federation.Federator,
 	converter *typeutils.Converter,
-	filter *visibility.Filter,
+	visFilter *visibility.Filter,
 	parseMention gtsmodel.ParseMentionFunc,
 ) Processor {
 	return Processor{
@@ -58,7 +58,7 @@ func New(
 		state:        state,
 		federator:    federator,
 		converter:    converter,
-		filter:       filter,
+		visFilter:    visFilter,
 		formatter:    text.NewFormatter(state.DB),
 		parseMention: parseMention,
 		polls:        polls,

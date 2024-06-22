@@ -83,7 +83,7 @@ type Dereferencer struct {
 	converter           *typeutils.Converter
 	transportController transport.Controller
 	mediaManager        *media.Manager
-	visibility          *visibility.Filter
+	visFilter           *visibility.Filter
 
 	// in-progress dereferencing emoji. we already perform
 	// locks per-status and per-account so we don't need
@@ -118,7 +118,7 @@ func NewDereferencer(
 		converter:           converter,
 		transportController: transportController,
 		mediaManager:        mediaManager,
-		visibility:          visFilter,
+		visFilter:           visFilter,
 		derefEmojis:         make(map[string]*media.ProcessingEmoji),
 		handshakes:          make(map[string][]*url.URL),
 	}

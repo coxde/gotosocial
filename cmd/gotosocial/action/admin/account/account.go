@@ -181,7 +181,7 @@ var Confirm action.GTSAction = func(ctx context.Context) error {
 		return err
 	}
 
-	user.Approved = func() *bool { a := true; return &a }()
+	user.Approved = util.Ptr(true)
 	user.Email = user.UnconfirmedEmail
 	user.ConfirmedAt = time.Now()
 	user.SignUpIP = nil
@@ -223,8 +223,8 @@ var Promote action.GTSAction = func(ctx context.Context) error {
 		return err
 	}
 
-	user.Admin = func() *bool { a := true; return &a }()
-	user.Moderator = func() *bool { a := true; return &a }()
+	user.Admin = util.Ptr(true)
+	user.Moderator = util.Ptr(true)
 	return state.DB.UpdateUser(
 		ctx, user,
 		"admin", "moderator",

@@ -798,7 +798,7 @@ func (c *Converter) statusToAPIFilterResults(
 
 		for _, account := range otherAccounts {
 			// Is this account visible?
-			visible, err := c.filter.AccountVisible(ctx, requestingAccount, account)
+			visible, err := c.visFilter.AccountVisible(ctx, requestingAccount, account)
 			if err != nil {
 				return nil, err
 			}

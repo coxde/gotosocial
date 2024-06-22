@@ -188,6 +188,7 @@ type Statusable interface {
 	WithAttachment
 	WithTag
 	WithReplies
+	WithGoToSocialInteractionPolicy
 }
 
 // Pollable represents the minimum activitypub interface for representing a 'poll' (it's a subset of a status).
@@ -550,6 +551,12 @@ type WithTag interface {
 type WithReplies interface {
 	GetActivityStreamsReplies() vocab.ActivityStreamsRepliesProperty
 	SetActivityStreamsReplies(vocab.ActivityStreamsRepliesProperty)
+}
+
+// WithReplies represents an object with GoToSocialInteractionPolicy.
+type WithGoToSocialInteractionPolicy interface {
+	GetGoToSocialInteractionPolicy() vocab.GoToSocialInteractionPolicyProperty
+	SetGoToSocialInteractionPolicy(vocab.GoToSocialInteractionPolicyProperty)
 }
 
 // WithMediaType represents an activity with ActivityStreamsMediaTypeProperty

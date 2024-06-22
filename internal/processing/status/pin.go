@@ -36,7 +36,7 @@ const allowedPinnedCount = 10
 // It checks:
 //   - Status is visible to requesting account.
 //   - Status belongs to requesting account.
-//   - Status is public, unlisted, or followers-only.
+//   - Status is public, unlocked, or followers-only.
 //   - Status is not a boost.
 func (p *Processor) getPinnableStatus(ctx context.Context, requestingAccount *gtsmodel.Account, targetStatusID string) (*gtsmodel.Status, gtserror.WithCode) {
 	targetStatus, errWithCode := p.c.GetVisibleTargetStatus(ctx,
@@ -70,7 +70,7 @@ func (p *Processor) getPinnableStatus(ctx context.Context, requestingAccount *gt
 //
 // Conditions for a pin to work:
 //   - Status belongs to requesting account.
-//   - Status is public, unlisted, or followers-only.
+//   - Status is public, unlocked, or followers-only.
 //   - Status is not a boost.
 //   - Status is not already pinnd.
 //   - Limit of pinned statuses not yet met or exceeded.
@@ -134,7 +134,7 @@ func (p *Processor) PinCreate(ctx context.Context, requestingAccount *gtsmodel.A
 //
 // Conditions for an unpin to work:
 //   - Status belongs to requesting account.
-//   - Status is public, unlisted, or followers-only.
+//   - Status is public, unlocked, or followers-only.
 //   - Status is not a boost.
 //
 // If the conditions can't be met, then code 422 Unprocessable Entity will be returned.

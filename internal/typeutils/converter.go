@@ -28,13 +28,13 @@ type Converter struct {
 	state          *state.State
 	defaultAvatars []string
 	randAvatars    sync.Map
-	filter         *visibility.Filter
+	visFilter      *visibility.Filter
 }
 
 func NewConverter(state *state.State) *Converter {
 	return &Converter{
 		state:          state,
 		defaultAvatars: populateDefaultAvatars(),
-		filter:         visibility.NewFilter(state),
+		visFilter:      visibility.NewFilter(state),
 	}
 }
